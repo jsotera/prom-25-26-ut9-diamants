@@ -1,6 +1,7 @@
 package edu.masanz.da.juegored.controller;
 
 import edu.masanz.da.juegored.model.UserSession;
+import edu.masanz.da.juegored.service.NavigationService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,18 +50,7 @@ public class HostConfigController {
 
     @FXML
     void cancelarHostConfig(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/masanz/da/juegored/launcher.fxml"));
-
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        Scene scene = new Scene(root);
-
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
+        NavigationService.getInstance().navigateTo("launcher.fxml");
     }
 
     @FXML

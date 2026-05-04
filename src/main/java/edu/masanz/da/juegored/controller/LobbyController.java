@@ -1,6 +1,7 @@
 package edu.masanz.da.juegored.controller;
 
 import edu.masanz.da.juegored.model.Sala;
+import edu.masanz.da.juegored.service.NavigationService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,24 +33,14 @@ public class LobbyController {
 
     @FXML
     void cancelar(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/masanz/da/juegored/launcher.fxml"));
-
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        Scene scene = new Scene(root);
-
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
+        NavigationService.getInstance().navigateTo("launcher.fxml");
     }
 
     @FXML
     void unirme(ActionEvent event) {
         if(salaSeleccionada!=null){
             System.out.println("Sala seleccionada: " + salaSeleccionada.getNombre());
+            NavigationService.getInstance().navigateTo("waiting.fxml");
         }
     }
 

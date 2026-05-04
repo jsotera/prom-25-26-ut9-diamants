@@ -1,5 +1,6 @@
 package edu.masanz.da.juegored;
 
+import edu.masanz.da.juegored.service.NavigationService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,16 +16,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                .getResource("launcher.fxml"));
-        Scene scene = null; // crear la escena
-        try {
-            scene = new Scene(fxmlLoader.load());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
-        stage.setScene(scene);
+        NavigationService.getInstance().setStage(stage);
+        NavigationService.getInstance().navigateTo("launcher.fxml");
+
         stage.setTitle("- Ejemplo de aplicación JavaFX -");
         stage.setResizable(false);
         stage.show();

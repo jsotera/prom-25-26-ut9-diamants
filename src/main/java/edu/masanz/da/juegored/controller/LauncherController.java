@@ -1,6 +1,7 @@
 package edu.masanz.da.juegored.controller;
 
 import edu.masanz.da.juegored.model.UserSession;
+import edu.masanz.da.juegored.service.NavigationService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,25 +20,17 @@ public class LauncherController {
 
     @FXML
     void crearSala(ActionEvent event) {
-
         String nickname = txtNickname.getText();
         System.out.println("LauncherController");
         System.out.println("Nickname: " + nickname);
         UserSession.getInstance().setNickname(nickname);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/masanz/da/juegored/hostconfig.fxml"));
+        NavigationService.getInstance().navigateTo("hostconfig.fxml");
+    }
 
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        Scene scene = new Scene(root);
-
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
+    @FXML
+    void unirSala(ActionEvent event) {
+        NavigationService.getInstance().navigateTo("lobby.fxml");
     }
 
     @FXML
@@ -46,24 +39,7 @@ public class LauncherController {
     }
 
     @FXML
-    void unirSala(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/masanz/da/juegored/lobby.fxml"));
-
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        Scene scene = new Scene(root);
-
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-    }
-
-    @FXML
     void salir(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
+        NavigationService.getInstance().close();
     }
 }
