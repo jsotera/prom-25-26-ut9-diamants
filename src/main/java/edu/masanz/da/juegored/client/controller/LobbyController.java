@@ -1,0 +1,98 @@
+package edu.masanz.da.juegored.client.controller;
+
+import edu.masanz.da.juegored.client.model.Sala;
+import edu.masanz.da.juegored.client.service.NavigationService;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+public class LobbyController {
+
+    private Sala salaSeleccionada;
+
+    @FXML
+    private Button btnUnirme;
+    @FXML
+    private TableView<Sala> tvSalas;
+    @FXML
+    private TableColumn<Sala, String> colNombre;
+    @FXML
+    private TableColumn<Sala, Integer> colJugadores;
+
+    @FXML
+    void cancelar(ActionEvent event) {
+        NavigationService.getInstance().navigateTo("launcher.fxml");
+    }
+
+    @FXML
+    void unirme(ActionEvent event) {
+        if(salaSeleccionada!=null){
+            System.out.println("Sala seleccionada: " + salaSeleccionada.getNombre());
+            NavigationService.getInstance().navigateTo("waiting.fxml");
+        }
+    }
+
+    public void initialize(){
+        System.out.println("Cargando cosas!");
+
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colJugadores.setCellValueFactory(new PropertyValueFactory<>("jugadores"));
+
+        // 2. Crear la lista de datos
+        ObservableList<Sala> datos = FXCollections.observableArrayList(
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Sala Pro", 4),
+                new Sala("Principiantes", 2),
+                new Sala("Torneo Semanal", 8)
+        );
+
+        // 3. Cargar los datos en la tabla
+        tvSalas.setItems(datos);
+
+        tvSalas.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                salaSeleccionada = newValue;
+                btnUnirme.setVisible(true);
+            }
+        });
+
+
+    }
+
+}

@@ -1,4 +1,4 @@
-package edu.masanz.da.juegored.model;
+package edu.masanz.da.juegored.client.model;
 
 public class Jugador {
 

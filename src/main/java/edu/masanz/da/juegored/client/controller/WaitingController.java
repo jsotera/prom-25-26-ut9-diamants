@@ -1,8 +1,7 @@
-package edu.masanz.da.juegored.controller;
+package edu.masanz.da.juegored.client.controller;
 
-import edu.masanz.da.juegored.model.Jugador;
-import edu.masanz.da.juegored.service.NavigationService;
-import javafx.beans.Observable;
+import edu.masanz.da.juegored.client.model.Jugador;
+import edu.masanz.da.juegored.client.service.NavigationService;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

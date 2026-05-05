@@ -1,4 +1,4 @@
-package edu.masanz.da.juegored.service;
+package edu.masanz.da.juegored.client.service;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
