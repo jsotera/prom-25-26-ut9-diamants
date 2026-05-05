@@ -13,9 +13,9 @@ public class ServerTest {
         String choice = sc.nextLine().trim().toUpperCase();
 
         if (choice.equals("S")) {
-            ServerManager.startServer();
+            ServerManager.publicarServidor();
         } else if (choice.equals("C")) {
-            PlayerManager.startClient();
+            PlayerManager.buscarServidores();
         } else {
             System.out.println("Opción no válida.");
         }
