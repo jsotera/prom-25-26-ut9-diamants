@@ -8,7 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.masanz.da.juegored.client.controller.LobbyController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.masanz.da.juegored.client.controller.LobbyController">
    <top>
       <BorderPane prefHeight="119.0" prefWidth="665.0" style="-fx-background-color: #353535;" BorderPane.alignment="CENTER">
          <center>
@@ -21,12 +21,12 @@
       </BorderPane>
    </top>
    <center>
-      <TableView fx:id="tvSalas" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tvSalas" prefHeight="200.0" prefWidth="200.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="colNombre" prefWidth="150.66665649414062" text="Nombre Sala" />
-            <TableColumn fx:id="colJugadores" prefWidth="254.6666259765625" text="Nº de Jugadores" />
-            <TableColumn fx:id="colJugadores1" prefWidth="254.6666259765625" text="Nº de Jugadores" />
-            <TableColumn fx:id="colJugadores11" prefWidth="254.6666259765625" text="Nº de Jugadores" />
+            <TableColumn fx:id="colHost" editable="false" prefWidth="115.0" resizable="false" sortable="false" style="-fx-alignment: center;" text="Host" />
+            <TableColumn fx:id="colPuerto" editable="false" prefWidth="115.0" resizable="false" sortable="false" style="-fx-alignment: center;" text="Puerto" />
+          <TableColumn fx:id="colNombre" editable="false" prefWidth="195.0" resizable="false" sortable="false" style="-fx-alignment: center;" text="Nombre Sala" />
+            <TableColumn fx:id="colJugadores" editable="false" prefWidth="153.0" resizable="false" sortable="false" style="-fx-alignment: center;" text="Nº de Jugadores" />
         </columns>
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

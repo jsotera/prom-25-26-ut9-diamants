@@ -13,7 +13,7 @@ public class ServerTest {
         String choice = sc.nextLine().trim().toUpperCase();
 
         if (choice.equals("S")) {
-            ServerManager.publicarServidor();
+            ServerManager.lanzarServidor();
         } else if (choice.equals("C")) {
             PlayerManager.buscarServidores();
         } else {

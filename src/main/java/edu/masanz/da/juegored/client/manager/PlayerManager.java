@@ -12,12 +12,15 @@ import static edu.masanz.da.juegored.core.Consts.PORT_UDP;
 
 public class PlayerManager {
 
+    public static boolean buscarServidores = true;
+
     public static void startClient() {
         int puerto = 0;
-        try (Socket socket = new Socket("localhost", puerto);
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-             Scanner in = new Scanner(socket.getInputStream());
-             Scanner userInput = new Scanner(System.in)) {
+        try {
+            Socket socket = new Socket("localhost", puerto);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            Scanner in = new Scanner(socket.getInputStream());
+            Scanner userInput = new Scanner(System.in);
 
             System.out.println("Conectado al servidor. Escribe tu nombre:");
             String name = userInput.nextLine();
@@ -48,7 +51,7 @@ public class PlayerManager {
 
                 System.out.println("Buscando servidores en la red...");
 
-                while (true) {
+                while (buscarServidores) {
                     DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                     try {
                         socket.receive(packet);
