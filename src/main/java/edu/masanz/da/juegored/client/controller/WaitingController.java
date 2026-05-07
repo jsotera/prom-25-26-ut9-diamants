@@ -80,6 +80,8 @@ public class WaitingController {
                 }
             }
         }).start();
+
+        PlayerManager.txtAreaChat = txtAreaChat;
     }
 
     @FXML
@@ -92,6 +94,11 @@ public class WaitingController {
     @FXML
     void enviar(ActionEvent event) {
         System.out.println("volando voy");
+        String msg = txtUserChat.getText();
+        if(!msg.isEmpty()){
+            PlayerManager.msg = msg;
+        }
+        txtUserChat.clear();
     }
 
     @FXML

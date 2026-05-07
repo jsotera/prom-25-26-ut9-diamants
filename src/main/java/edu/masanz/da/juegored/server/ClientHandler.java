@@ -59,6 +59,12 @@ public class ClientHandler extends Thread {
                             writer.println(KEY_WAITING_USERS+":"+msgUsers);
                         }
                     }
+                } else if (message.startsWith(KEY_NEW_MSG)) {
+                    synchronized (clientWriters) {
+                        for (PrintWriter writer : clientWriters) {
+                            writer.println(message);
+                        }
+                    }
                 }
             }
             System.out.println("hilo ClientHandler muerto ");

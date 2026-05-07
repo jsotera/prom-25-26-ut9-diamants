@@ -7,6 +7,7 @@ public class Consts {
     public static final String KEY_NEW_PLAYER = "NEW_PLAYER";
     public static final String KEY_WAITING_USERS = "WAITING_USERS";
     public static final String KEY_USER_EXIT = "WAITING_USERS";
+    public static final String KEY_NEW_MSG = "NEW_MESSAGE";
 
 
 

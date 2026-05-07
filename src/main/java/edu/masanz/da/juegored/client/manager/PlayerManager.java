@@ -3,6 +3,7 @@ package edu.masanz.da.juegored.client.manager;
 import edu.masanz.da.juegored.client.model.Jugador;
 import edu.masanz.da.juegored.client.model.Sala;
 import edu.masanz.da.juegored.client.model.UserSession;
+import javafx.scene.control.TextArea;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +19,8 @@ public class PlayerManager {
     public static boolean buscarServidores = false;
     public static boolean conexionAbierta = false;
     public static Set<Jugador> jugadores = new HashSet<>();
+    public static String msg;
+    public static TextArea txtAreaChat;
 
     public static void startClient(Sala sala) {
         new Thread(() -> {
@@ -42,6 +45,10 @@ public class PlayerManager {
                                 }
                                 jugadores.add(new Jugador(playerInfo.split("---")[0], Boolean.parseBoolean(playerInfo.split("---")[1])));
                             }
+                        } else if (message.startsWith(KEY_NEW_MSG)) {
+                            System.out.println("escribiendo "+message);
+                            txtAreaChat.appendText(message.substring(KEY_NEW_MSG.length()+1));
+                            txtAreaChat.appendText("\n");
                         }
                     }
                     conexionAbierta = false;
@@ -52,8 +59,11 @@ public class PlayerManager {
 
                 System.out.println("Ya puedes escribir mensajes:");
                 while (conexionAbierta) {
-                    //out.println(name + ": " + userInput.nextLine());
-                    Thread.sleep(1000);
+                    if(msg!=null && !msg.isEmpty()){
+                        out.println(KEY_NEW_MSG +":"+name+":"+msg);
+                        msg = null;
+                    }
+                    Thread.sleep(100);
                 }
                 conexionAbierta = false;
                 out.println(KEY_USER_EXIT+":"+name);
