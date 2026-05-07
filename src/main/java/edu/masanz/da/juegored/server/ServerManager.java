@@ -10,8 +10,8 @@ import static edu.masanz.da.juegored.core.Consts.PORT_UDP;
 
 public class ServerManager {
 
-    private static Set<PrintWriter> clientWriters = new HashSet<>();
-    private static Set<Socket> clientes = new HashSet<>();
+    public static Set<PrintWriter> clientWriters = new HashSet<>();
+    public static Set<ClientHandler> clientes = new HashSet<>();
     private static boolean aceptarJugadores = true;
     public static boolean servidorVivo = false;
 
@@ -34,15 +34,15 @@ public class ServerManager {
                 while (servidorVivo) {
                     try {
                         Socket socket = serverSocket.accept();
-                        clientes.add(socket);
-                        ClientHandler ch = new ClientHandler(socket, clientWriters);
+                        ClientHandler ch = new ClientHandler(socket);
+                        clientes.add(ch);
                         ch.start();
                     } catch (SocketTimeoutException ste) {
                         // aqui entramos si en 1 segundo nadie ha aceptado la peticion
                     }
                 }
-                for (Socket cliente : clientes) {
-                    cliente.close();
+                for (ClientHandler cliente : clientes) {
+                    cliente.getSocket().close();
                 }
                 serverSocket.close();
                 System.out.println("hilo lanzarServidor muerto");

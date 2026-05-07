@@ -1,17 +1,23 @@
 package edu.masanz.da.juegored.client.manager;
 
+import edu.masanz.da.juegored.client.model.Jugador;
 import edu.masanz.da.juegored.client.model.Sala;
 import edu.masanz.da.juegored.client.model.UserSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
+
+import static edu.masanz.da.juegored.core.Consts.*;
 
 public class PlayerManager {
 
     public static boolean buscarServidores = false;
     public static boolean conexionAbierta = false;
+    public static Set<Jugador> jugadores = new HashSet<>();
 
     public static void startClient(Sala sala) {
         new Thread(() -> {
@@ -26,11 +32,23 @@ public class PlayerManager {
                 // Hilo para escuchar mensajes del servidor sin bloquear la escritura
                 new Thread(() -> {
                     while (conexionAbierta && in.hasNextLine()) {
-                        System.out.println("\n" + in.nextLine());
+                        String message = in.nextLine();
+                        if(message.startsWith(KEY_WAITING_USERS)){
+                            jugadores.clear();
+                            String[] playersInfo = message.substring(KEY_WAITING_USERS.length() + 1).split(";");
+                            for (String playerInfo : playersInfo) {
+                                if(playerInfo.isEmpty() || playerInfo.split("---").length!=2){
+                                    continue;
+                                }
+                                jugadores.add(new Jugador(playerInfo.split("---")[0], Boolean.parseBoolean(playerInfo.split("---")[1])));
+                            }
+                        }
                     }
                     conexionAbierta = false;
                     System.out.println("hilo startClient ESCUCHAR muerto");
                 }).start();
+
+                out.println(KEY_NEW_PLAYER +":"+name);
 
                 System.out.println("Ya puedes escribir mensajes:");
                 while (conexionAbierta) {
@@ -38,6 +56,8 @@ public class PlayerManager {
                     Thread.sleep(1000);
                 }
                 conexionAbierta = false;
+                out.println(KEY_USER_EXIT+":"+name);
+                Thread.sleep(500); // tiempo para que envie el mensaje
                 System.out.println("hilo startClient ESCRIBIR muerto");
                 socket.close();
             } catch (IOException e) {

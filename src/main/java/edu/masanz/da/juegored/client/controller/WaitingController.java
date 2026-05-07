@@ -6,6 +6,7 @@ import edu.masanz.da.juegored.client.service.NavigationService;
 import edu.masanz.da.juegored.server.ClientHandler;
 import edu.masanz.da.juegored.server.ServerManager;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 
@@ -56,6 +58,27 @@ public class WaitingController {
                     e.printStackTrace();
                 }
             });
+        }).start();
+
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreUsuario"));
+        colReady.setCellValueFactory(new PropertyValueFactory<>("estaListo"));
+
+        jugadores = FXCollections.observableArrayList(
+
+        );
+
+        tvPlayers.setItems(jugadores);
+
+        new Thread(() -> {
+            while(PlayerManager.conexionAbierta){
+                jugadores.clear();
+                jugadores.addAll(PlayerManager.jugadores);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }).start();
     }
 

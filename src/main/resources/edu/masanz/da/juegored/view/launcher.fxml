@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.masanz.da.juegored.client.controller.LauncherController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.masanz.da.juegored.client.controller.LauncherController">
    <top>
       <BorderPane prefHeight="119.0" prefWidth="665.0" style="-fx-background-color: #353535;" BorderPane.alignment="CENTER">
          <center>
@@ -23,8 +23,8 @@
    <center>
       <VBox alignment="CENTER" prefHeight="259.0" prefWidth="665.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Label maxWidth="200.0" prefWidth="200.0" text="Nickname" />
-            <TextField fx:id="txtNickname" maxWidth="200.0" prefWidth="200.0" />
+            <Label maxWidth="200.0" prefWidth="200.0" text="*Nickname:" />
+            <TextField fx:id="txtNickname" maxWidth="200.0" prefWidth="200.0" promptText="Nick de usuario" text="Lorem Ipsum" />
             <Button maxWidth="200.0" mnemonicParsing="false" onAction="#crearSala" prefWidth="200.0" text="Crear sala" />
             <Button maxWidth="200.0" mnemonicParsing="false" onAction="#unirSala" prefWidth="200.0" text="Unirme a una sala" />
             <Button maxWidth="200.0" mnemonicParsing="false" onAction="#jugarSolo" prefWidth="200.0" text="Jugar en solitario" />

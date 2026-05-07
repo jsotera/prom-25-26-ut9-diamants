@@ -14,15 +14,24 @@ public class LauncherController {
     @FXML
     void crearSala(ActionEvent event) {
         String nickname = txtNickname.getText();
-        System.out.println("LauncherController");
-        System.out.println("Nickname: " + nickname);
-        UserSession.getInstance().setNickname(nickname);
 
+        if(nickname.isEmpty()){
+            return;
+        }
+
+        UserSession.getInstance().setNickname(nickname);
         NavigationService.getInstance().navigateTo("hostconfig.fxml");
     }
 
     @FXML
     void unirSala(ActionEvent event) {
+        String nickname = txtNickname.getText();
+
+        if(nickname.isEmpty()){
+            return;
+        }
+
+        UserSession.getInstance().setNickname(nickname);
         NavigationService.getInstance().navigateTo("lobby.fxml");
     }
 
