@@ -23,6 +23,7 @@ public class Main extends Application {
         stage.setOnCloseRequest(event -> {
             ServerManager.servidorVivo = false;
             PlayerManager.conexionAbierta = false;
+            PlayerManager.buscarServidores = false;
         });
         stage.show();
     }

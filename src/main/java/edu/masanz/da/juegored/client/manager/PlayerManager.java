@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class PlayerManager {
 
+    public static boolean buscarServidores = false;
     public static boolean conexionAbierta = false;
 
     public static void startClient(Sala sala) {

@@ -36,11 +36,9 @@ public class LobbyController {
     @FXML
     private TableColumn<Sala, Integer> colPuerto;
 
-    private static boolean buscarSalas;
-
     @FXML
     void cancelar(ActionEvent event) {
-        buscarSalas = false;
+        PlayerManager.buscarServidores = false;
         NavigationService.getInstance().navigateTo("launcher.fxml");
     }
 
@@ -48,7 +46,7 @@ public class LobbyController {
     void unirme(ActionEvent event) {
         if(salaSeleccionada!=null){
             System.out.println("Sala seleccionada: " + salaSeleccionada.getNombre());
-            buscarSalas = false;
+            PlayerManager.buscarServidores = false;
             UserSession.getInstance().setSala(salaSeleccionada);
             PlayerManager.startClient(salaSeleccionada);
             NavigationService.getInstance().navigateTo("waiting.fxml");
@@ -56,9 +54,7 @@ public class LobbyController {
     }
 
     public void initialize(){
-        System.out.println("Cargando cosas!");
-
-        buscarSalas = true;
+        PlayerManager.buscarServidores = true;
 
         colHost.setCellValueFactory(new PropertyValueFactory<>("host"));
         colPuerto.setCellValueFactory(new PropertyValueFactory<>("puerto"));
@@ -88,7 +84,7 @@ public class LobbyController {
 
                 System.out.println("Buscando servidores en la red...");
 
-                while (buscarSalas) {
+                while (PlayerManager.buscarServidores) {
                     DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                     try {
                         socket.receive(packet);
