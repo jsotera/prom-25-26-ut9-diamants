@@ -11,6 +11,8 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.masanz.da.juegored.client.controller.HostConfigController">
     <top>
@@ -43,14 +45,16 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Label alignment="CENTER_RIGHT" prefWidth="140.0" text="Nombre de sala:" textAlignment="RIGHT" />
+                  <Label alignment="CENTER_RIGHT" prefWidth="140.0" text="*Nombre de sala:" textAlignment="RIGHT" />
                   <TextField fx:id="txtSala" maxWidth="200.0" prefWidth="200.0" text="Hola Mundo" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(min 3 - max 8)" visible="false" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Label alignment="CENTER_RIGHT" prefWidth="140.0" text="Número de jugadores:" textAlignment="RIGHT" />
+                  <Label alignment="CENTER_RIGHT" prefWidth="140.0" text="*Número de jugadores:" textAlignment="RIGHT" />
                   <TextField fx:id="numJugadores" prefWidth="200.0" text="3" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(min 3 - max 8)" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
@@ -65,10 +69,18 @@
                         <RadioButton fx:id="rbtPrivate" mnemonicParsing="false" prefWidth="100.0" text="Privada" toggleGroup="$tipo" />
                      </children>
                   </HBox>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(min 3 - max 8)" visible="false" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" />
-            <HBox alignment="CENTER" layoutX="10.0" layoutY="275.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0" />
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="275.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Text fx:id="txtError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Por favor, rellena todos los campos correctamente" visible="false">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Text>
+               </children></HBox>
          </children>
          <BorderPane.margin>
             <Insets top="10.0" />

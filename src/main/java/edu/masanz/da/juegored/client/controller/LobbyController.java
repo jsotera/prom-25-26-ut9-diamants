@@ -1,6 +1,8 @@
 package edu.masanz.da.juegored.client.controller;
 
+import edu.masanz.da.juegored.client.manager.PlayerManager;
 import edu.masanz.da.juegored.client.model.Sala;
+import edu.masanz.da.juegored.client.model.UserSession;
 import edu.masanz.da.juegored.client.service.NavigationService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,6 +49,8 @@ public class LobbyController {
         if(salaSeleccionada!=null){
             System.out.println("Sala seleccionada: " + salaSeleccionada.getNombre());
             buscarSalas = false;
+            UserSession.getInstance().setSala(salaSeleccionada);
+            PlayerManager.startClient(salaSeleccionada);
             NavigationService.getInstance().navigateTo("waiting.fxml");
         }
     }
@@ -98,6 +102,7 @@ public class LobbyController {
                         }
 
                     } catch (SocketTimeoutException e) {
+                        datos.clear();
                         System.out.println("No se encontraron más servidores.");
                     }
                 }

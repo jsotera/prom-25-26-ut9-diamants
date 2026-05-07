@@ -13,9 +13,9 @@ public class ServerTest {
         String choice = sc.nextLine().trim().toUpperCase();
 
         if (choice.equals("S")) {
-            ServerManager.lanzarServidor();
+            ServerManager.lanzarServidor(12347, "hola mundo cruel", 4);
         } else if (choice.equals("C")) {
-            PlayerManager.buscarServidores();
+            //PlayerManager.buscarServidores();
         } else {
             System.out.println("Opción no válida.");
         }

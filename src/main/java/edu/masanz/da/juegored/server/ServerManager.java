@@ -12,22 +12,24 @@ public class ServerManager {
 
     private static Set<PrintWriter> clientWriters = new HashSet<>();
     private static boolean aceptarJugadores = true;
+    public static boolean servidorVivo = false;
 
     private static int puerto;
     private static String nombre;
     private static int jugadores;
     private static int maxJugadores;
 
-    public static void lanzarServidor() {
-        puerto = (int)(Math.random()*20000)+10000; // 10000 - 29999
-        nombre = "Hola Mundo Cruel";
-        jugadores = 2;
-        maxJugadores = 4;
+    public static void lanzarServidor(int puerto, String nombre, int maxJugadores) {
+        servidorVivo = true;
+        ServerManager.puerto = puerto;
+        ServerManager.nombre = nombre;
+        jugadores = 1;
+        ServerManager.maxJugadores = maxJugadores;
         System.out.println("Servidor iniciado en el puerto " + puerto);
         new Thread(() -> {
             try {
                 ServerSocket serverSocket = new ServerSocket(puerto);
-                while (true) {
+                while (servidorVivo) {
                     Socket socket = serverSocket.accept();
                     ClientHandler ch = new ClientHandler(socket, clientWriters);
                     ch.start();
@@ -49,7 +51,7 @@ public class ServerManager {
 
                 System.out.println("Servidor de descubrimiento iniciado...");
 
-                while (aceptarJugadores) {
+                while (servidorVivo && aceptarJugadores) {
                     DatagramPacket packet = new DatagramPacket(
                             buffer, buffer.length,
                             InetAddress.getByName("255.255.255.255"), PORT_UDP

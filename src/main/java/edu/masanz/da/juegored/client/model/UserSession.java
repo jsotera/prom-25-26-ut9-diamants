@@ -5,6 +5,7 @@ public class UserSession {
     private static UserSession instance;
 
     private String nickname;
+    private Sala sala;
 
     private UserSession() {
 
@@ -25,4 +26,11 @@ public class UserSession {
         return nickname;
     }
 
+    public Sala getSala() {
+        return sala;
+    }
+
+    public void setSala(Sala sala) {
+        this.sala = sala;
+    }
 }

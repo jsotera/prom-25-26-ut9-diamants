@@ -2,6 +2,7 @@ package edu.masanz.da.juegored.client.controller;
 
 import edu.masanz.da.juegored.client.model.Jugador;
 import edu.masanz.da.juegored.client.service.NavigationService;
+import edu.masanz.da.juegored.server.ServerManager;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,6 +40,7 @@ public class WaitingController {
 
     @FXML
     void cancelar(ActionEvent event) {
+        ServerManager.servidorVivo = false;
         NavigationService.getInstance().navigateTo("launcher.fxml");
     }
 
