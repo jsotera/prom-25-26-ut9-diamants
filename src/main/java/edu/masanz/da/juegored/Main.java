@@ -1,6 +1,8 @@
 package edu.masanz.da.juegored;
 
+import edu.masanz.da.juegored.client.manager.PlayerManager;
 import edu.masanz.da.juegored.client.service.NavigationService;
+import edu.masanz.da.juegored.server.ServerManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -18,6 +20,10 @@ public class Main extends Application {
 
         stage.setTitle("- DiamantsNET -");
         stage.setResizable(false);
+        stage.setOnCloseRequest(event -> {
+            ServerManager.servidorVivo = false;
+            PlayerManager.conexionAbierta = false;
+        });
         stage.show();
     }
 
