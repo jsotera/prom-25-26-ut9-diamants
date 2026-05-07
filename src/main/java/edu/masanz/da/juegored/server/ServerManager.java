@@ -11,6 +11,7 @@ import static edu.masanz.da.juegored.core.Consts.PORT_UDP;
 public class ServerManager {
 
     private static Set<PrintWriter> clientWriters = new HashSet<>();
+    private static Set<Socket> clientes = new HashSet<>();
     private static boolean aceptarJugadores = true;
     public static boolean servidorVivo = false;
 
@@ -25,15 +26,26 @@ public class ServerManager {
         ServerManager.nombre = nombre;
         jugadores = 1;
         ServerManager.maxJugadores = maxJugadores;
-        System.out.println("Servidor iniciado en el puerto " + puerto);
+
         new Thread(() -> {
             try {
                 ServerSocket serverSocket = new ServerSocket(puerto);
+                serverSocket.setSoTimeout(1000); // 1 segundo de espera máxima
                 while (servidorVivo) {
-                    Socket socket = serverSocket.accept();
-                    ClientHandler ch = new ClientHandler(socket, clientWriters);
-                    ch.start();
+                    try {
+                        Socket socket = serverSocket.accept();
+                        clientes.add(socket);
+                        ClientHandler ch = new ClientHandler(socket, clientWriters);
+                        ch.start();
+                    } catch (SocketTimeoutException ste) {
+                        // aqui entramos si en 1 segundo nadie ha aceptado la peticion
+                    }
                 }
+                for (Socket cliente : clientes) {
+                    cliente.close();
+                }
+                serverSocket.close();
+                System.out.println("hilo lanzarServidor muerto");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -49,8 +61,6 @@ public class ServerManager {
                 String message = InetAddress.getLocalHost().getHostAddress() + ";"+puerto+";"+nombre+";"+jugadores+";"+maxJugadores;
                 byte[] buffer = message.getBytes();
 
-                System.out.println("Servidor de descubrimiento iniciado...");
-
                 while (servidorVivo && aceptarJugadores) {
                     DatagramPacket packet = new DatagramPacket(
                             buffer, buffer.length,
@@ -59,6 +69,8 @@ public class ServerManager {
                     socket.send(packet);
                     Thread.sleep(2000);
                 }
+                socket.close();
+                System.out.println("hilo publicarServidor muerto");
             } catch (Exception e) {
                 e.printStackTrace();
             }

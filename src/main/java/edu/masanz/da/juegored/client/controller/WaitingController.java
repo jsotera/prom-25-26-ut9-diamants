@@ -1,8 +1,11 @@
 package edu.masanz.da.juegored.client.controller;
 
+import edu.masanz.da.juegored.client.manager.PlayerManager;
 import edu.masanz.da.juegored.client.model.Jugador;
 import edu.masanz.da.juegored.client.service.NavigationService;
+import edu.masanz.da.juegored.server.ClientHandler;
 import edu.masanz.da.juegored.server.ServerManager;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +14,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+
+import java.io.IOException;
 
 public class WaitingController {
 
@@ -35,12 +40,29 @@ public class WaitingController {
     private ObservableList<Jugador> jugadores;
 
     public void initialize(){
-
+        new Thread(() -> {
+            while(PlayerManager.conexionAbierta){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            System.out.println("hilo initialize WAITTING ROOM muerto");
+            Platform.runLater(() -> {
+                try {
+                    cancelar(null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }).start();
     }
 
     @FXML
     void cancelar(ActionEvent event) {
         ServerManager.servidorVivo = false;
+        PlayerManager.conexionAbierta = false;
         NavigationService.getInstance().navigateTo("launcher.fxml");
     }
 
