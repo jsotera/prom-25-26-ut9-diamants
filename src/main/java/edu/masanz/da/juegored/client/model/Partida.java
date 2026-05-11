@@ -73,61 +73,30 @@ public class Partida {
      * @return si salta trampa, true, sino false
      */
     private boolean jugarTurno() {
-        boolean sacarCarta = false;
         int jugadoresActivos = 0;
         List<Jugador> jugadoresQueVuelven = new ArrayList<>();
         // DECISION HUMANA
-        if(jugadores.get(0).isExplorar()) {
-            Scanner teclado = new Scanner(System.in);
-            System.out.print("¿Quieres continuar? (vas " + jugadores.get(0).getDiamantesRonda() + ") [S/n]: ");
-            String decision = teclado.nextLine();
-            if (decision.equalsIgnoreCase("n")) {
-                jugadores.get(0).setExplorar(false);
-                jugadoresQueVuelven.add(jugadores.get(0));
-            } else {
-                jugadores.get(0).setExplorar(true);
-                sacarCarta = true;
-                jugadoresActivos++;
-            }
-        }
+        jugadoresActivos = jugadoresActivos + decisionHumana(jugadoresQueVuelven);
         // DECISION DE BOTS
-        for (int i = 1; i < jugadores.size(); i++) {
-            Jugador bot = jugadores.get(i);
-            if(bot.isExplorar()) {
-                if (Math.random() < 0.75) {
-                    bot.setExplorar(true);
-                    sacarCarta = true;
-                    jugadoresActivos++;
-                } else {
-                    bot.setExplorar(false);
-                    jugadoresQueVuelven.add(bot);
-                }
-            }
-        }
+        jugadoresActivos = jugadoresActivos + decisionBots(jugadoresQueVuelven);
         // dar las gemas a aquellos jugadores que se vuelven al campamento
-        if(jugadoresQueVuelven.size()>0) {
-            int diamantesParaCadaJugador = diamantesParaLaVueltaTotales / jugadoresQueVuelven.size();
-            diamantesParaLaVueltaTotales = diamantesParaLaVueltaTotales % jugadoresQueVuelven.size();
-            for (Jugador jugador : jugadoresQueVuelven) {
-                jugador.setDiamantesRonda(jugador.getDiamantesRonda() + diamantesParaCadaJugador);
-                jugador.setDiamantesTotal(jugador.getDiamantesTotal() + jugador.getDiamantesRonda());
-            }
-        }
-        if(!sacarCarta){
+        repartirGemasDeVuelta(jugadoresQueVuelven);
+        // si no quedan jugadores, finaliza el turno
+        if(jugadoresActivos<=0){
             return false;
         }
+        // Sacamos carta de la baraja y la analizamos
         Carta carta = baraja.remove(0);
         System.out.println(carta);
-        if(carta.isEsTrampa()){
-            int numDeEsaCartaTrampa = aparicionCartasTrampa.get(carta.getNombre());
-            numDeEsaCartaTrampa++;
-            aparicionCartasTrampa.put(carta.getNombre(), numDeEsaCartaTrampa);
-            if(numDeEsaCartaTrampa >= 2){
-                // fin ronda
-                return true;
-            }
-            return false;
+        // Analizamos si es una trampa
+        boolean explota = analizarTrampa(carta);
+        if(!carta.isEsTrampa()){
+            analizarDiamantes(carta, jugadoresActivos);
         }
+        return explota;
+    }
+
+    private void analizarDiamantes(Carta carta, int jugadoresActivos) {
         int diamantes = carta.getDiamantes();
         int diamantesParaCadaJugador = diamantes / jugadoresActivos;
         int diamantesParaLaVuelta = diamantes % jugadoresActivos;
@@ -138,7 +107,71 @@ public class Partida {
                 jugador.setDiamantesRonda(jugador.getDiamantesRonda()+diamantesParaCadaJugador);
             }
         }
+    }
+
+    private boolean analizarTrampa(Carta carta) {
+        if(carta.isEsTrampa()){
+            int numDeEsaCartaTrampa = aparicionCartasTrampa.get(carta.getNombre());
+            numDeEsaCartaTrampa++;
+            aparicionCartasTrampa.put(carta.getNombre(), numDeEsaCartaTrampa);
+            // explota cuando han salido 2 trampas iguales
+            if(numDeEsaCartaTrampa >= 2){
+                return true;
+            }
+        }
         return false;
+    }
+
+    private void repartirGemasDeVuelta(List<Jugador> jugadoresQueVuelven) {
+        if(jugadoresQueVuelven.size()>0) {
+            int diamantesParaCadaJugador = diamantesParaLaVueltaTotales / jugadoresQueVuelven.size();
+            diamantesParaLaVueltaTotales = diamantesParaLaVueltaTotales % jugadoresQueVuelven.size();
+            for (Jugador jugador : jugadoresQueVuelven) {
+                jugador.setDiamantesRonda(jugador.getDiamantesRonda() + diamantesParaCadaJugador);
+                jugador.setDiamantesTotal(jugador.getDiamantesTotal() + jugador.getDiamantesRonda());
+            }
+        }
+    }
+
+    /**
+     * @param jugadoresQueVuelven donde incluyo los jugadores que vuelven
+     * @return devuelvo la cantidad de jugadores que continuan
+     */
+    private int decisionBots(List<Jugador> jugadoresQueVuelven) {
+        int botsActivos = 0;
+        for (int i = 1; i < jugadores.size(); i++) {
+            Jugador bot = jugadores.get(i);
+            if(bot.isExplorar()) {
+                if (Math.random() < 0.75) {
+                    bot.setExplorar(true);
+                    botsActivos++;
+                } else {
+                    bot.setExplorar(false);
+                    jugadoresQueVuelven.add(bot);
+                }
+            }
+        }
+        return botsActivos;
+    }
+
+    /**
+     * @param jugadoresQueVuelven donde incluyo los jugadores que vuelven
+     * @return devuelvo la cantidad de jugadores que continuan
+     */
+    private int decisionHumana(List<Jugador> jugadoresQueVuelven) {
+        if(jugadores.get(0).isExplorar()) {
+            Scanner teclado = new Scanner(System.in);
+            System.out.print("¿Quieres continuar? (vas " + jugadores.get(0).getDiamantesRonda() + ") [S/n]: ");
+            String decision = teclado.nextLine();
+            if (decision.equalsIgnoreCase("n")) {
+                jugadores.get(0).setExplorar(false);
+                jugadoresQueVuelven.add(jugadores.get(0));
+            } else {
+                jugadores.get(0).setExplorar(true);
+                return 1;
+            }
+        }
+        return 0;
     }
 
     private void mostrarResultados() {
@@ -147,7 +180,7 @@ public class Partida {
             return j2.getDiamantesTotal() - j1.getDiamantesTotal();
         });
         System.out.printf("%10s %10s\n", "JUGADOR", "GEMAS");
-        System.out.println("*".repeat(20));
+        System.out.println("*".repeat(22));
         for (int i = 0; i < jugadores.size(); i++) {
             System.out.printf("%10s %10d\n", jugadores.get(i).getNombreUsuario(), jugadores.get(i).getDiamantesTotal());
         }
@@ -166,7 +199,7 @@ public class Partida {
     public static void main(String[] args) {
         Partida p = new Partida(new Jugador("Javi", false));
         //System.out.println(p);
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 2; i++) {
             p.jugarRonda();
         }
         p.mostrarResultados();
