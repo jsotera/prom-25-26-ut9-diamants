@@ -12,6 +12,9 @@ public class Jugador {
     public Jugador(String nombreUsuario, boolean estaListo) {
         this.nombreUsuario = nombreUsuario;
         this.estaListo = estaListo;
+        this.explorar = true;
+        this.diamantesTotal = 0;
+        this.diamantesRonda = 0;
     }
 
     public String getNombreUsuario() {
