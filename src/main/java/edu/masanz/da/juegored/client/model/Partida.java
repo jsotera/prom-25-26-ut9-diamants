@@ -196,6 +196,46 @@ public class Partida {
                 '}';
     }
 
+    public HashMap<String, Integer> getAparicionCartasTrampa() {
+        return aparicionCartasTrampa;
+    }
+
+    public void setAparicionCartasTrampa(HashMap<String, Integer> aparicionCartasTrampa) {
+        this.aparicionCartasTrampa = aparicionCartasTrampa;
+    }
+
+    public List<Carta> getBaraja() {
+        return baraja;
+    }
+
+    public void setBaraja(List<Carta> baraja) {
+        this.baraja = baraja;
+    }
+
+    public List<Jugador> getJugadores() {
+        return jugadores;
+    }
+
+    public void setJugadores(List<Jugador> jugadores) {
+        this.jugadores = jugadores;
+    }
+
+    public int getRonda() {
+        return ronda;
+    }
+
+    public void setRonda(int ronda) {
+        this.ronda = ronda;
+    }
+
+    public int getDiamantesParaLaVueltaTotales() {
+        return diamantesParaLaVueltaTotales;
+    }
+
+    public void setDiamantesParaLaVueltaTotales(int diamantesParaLaVueltaTotales) {
+        this.diamantesParaLaVueltaTotales = diamantesParaLaVueltaTotales;
+    }
+
     public static void main(String[] args) {
         Partida p = new Partida(new Jugador("Javi", false));
         //System.out.println(p);

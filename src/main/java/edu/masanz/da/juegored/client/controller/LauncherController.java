@@ -37,7 +37,14 @@ public class LauncherController {
 
     @FXML
     void jugarSolo(ActionEvent event) {
+        String nickname = txtNickname.getText();
 
+        if(nickname.isEmpty()){
+            return;
+        }
+
+        UserSession.getInstance().setNickname(nickname);
+        NavigationService.getInstance().navigateTo("ingame.fxml");
     }
 
     @FXML
