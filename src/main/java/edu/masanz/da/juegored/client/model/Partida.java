@@ -8,8 +8,10 @@ public class Partida {
     private List<Carta> baraja;
     private List<Jugador> jugadores;
     private int ronda;
+    private int diamantesParaCadaJugador;
     private int diamantesParaLaVueltaTotales;
     private static final int RONDAS_MAX = 5;
+    private Carta cartaJugada;
 
     public Partida(Jugador jugadorHumano) {
         // TODO 01: Inicializar y poblar valores
@@ -24,7 +26,7 @@ public class Partida {
             Jugador bot = new Jugador("player"+i, false);
             this.jugadores.add(bot);
         }
-        this.ronda = 1;
+        this.ronda = 0;
         this.diamantesParaLaVueltaTotales = 0;
     }
 
@@ -69,6 +71,24 @@ public class Partida {
     }
 
     /**
+     * @return devuelve true cuando puedes seguir jugando, sino false
+     */
+    public boolean prepararSiguienteRonda(){
+        ronda++;
+        cartaJugada = null;
+        poblarBaja();
+        Collections.shuffle(baraja);
+        for (Jugador jugador : jugadores) {
+            jugador.setExplorar(true);
+            jugador.setDiamantesRonda(0);
+        }
+        diamantesParaLaVueltaTotales = 0;
+        diamantesParaCadaJugador = 0;
+        return RONDAS_MAX >= ronda;
+    }
+
+    /**
+     * ESTE METODO ES PARA CONSOLA
      * Intenta jugar un turno y dice si salta una trampa
      * @return si salta trampa, true, sino false
      */
@@ -96,9 +116,44 @@ public class Partida {
         return explota;
     }
 
+    /**
+     * ESTE METODO ES PARA JAVAFX
+     * @param juegaElHumano
+     * @return
+     */
+    public boolean jugarTurno(boolean juegaElHumano) {
+        int jugadoresActivos = 0;
+        diamantesParaCadaJugador = 0;
+        List<Jugador> jugadoresQueVuelven = new ArrayList<>();
+        // DECISION HUMANA
+        if(juegaElHumano){
+            jugadoresActivos = jugadoresActivos + 1;
+        } else {
+            jugadores.get(0).setExplorar(false);
+            jugadoresQueVuelven.add(jugadores.get(0));
+        }
+        // DECISION DE BOTS
+        jugadoresActivos = jugadoresActivos + decisionBots(jugadoresQueVuelven);
+        // dar las gemas a aquellos jugadores que se vuelven al campamento
+        repartirGemasDeVuelta(jugadoresQueVuelven);
+        // si no quedan jugadores, finaliza el turno
+        if(jugadoresActivos<=0){
+            return false;
+        }
+        // Sacamos carta de la baraja y la analizamos
+        cartaJugada = baraja.remove(0);
+        System.out.println(cartaJugada);
+        // Analizamos si es una trampa
+        boolean explota = analizarTrampa(cartaJugada);
+        if(!cartaJugada.isEsTrampa()){
+            analizarDiamantes(cartaJugada, jugadoresActivos);
+        }
+        return explota;
+    }
+
     private void analizarDiamantes(Carta carta, int jugadoresActivos) {
         int diamantes = carta.getDiamantes();
-        int diamantesParaCadaJugador = diamantes / jugadoresActivos;
+        diamantesParaCadaJugador = diamantes / jugadoresActivos;
         int diamantesParaLaVuelta = diamantes % jugadoresActivos;
         System.out.println("Cada jugador se lleva: "+diamantesParaCadaJugador);
         diamantesParaLaVueltaTotales = diamantesParaLaVueltaTotales + diamantesParaLaVuelta;
@@ -234,6 +289,22 @@ public class Partida {
 
     public void setDiamantesParaLaVueltaTotales(int diamantesParaLaVueltaTotales) {
         this.diamantesParaLaVueltaTotales = diamantesParaLaVueltaTotales;
+    }
+
+    public Carta getCartaJugada() {
+        return cartaJugada;
+    }
+
+    public void setCartaJugada(Carta cartaJugada) {
+        this.cartaJugada = cartaJugada;
+    }
+
+    public int getDiamantesParaCadaJugador() {
+        return diamantesParaCadaJugador;
+    }
+
+    public void setDiamantesParaCadaJugador(int diamantesParaCadaJugador) {
+        this.diamantesParaCadaJugador = diamantesParaCadaJugador;
     }
 
     public static void main(String[] args) {

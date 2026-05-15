@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -102,6 +103,7 @@
                      </image>
                   </ImageView>
                   <Button layoutX="285.0" layoutY="12.0" mnemonicParsing="false" onAction="#cancelar" text="Cancelar Partida" />
+                  <Button fx:id="btnSiguienteRonda" layoutX="285.0" layoutY="50.0" mnemonicParsing="false" onAction="#siguienteRonda" text="Siguiente Ronda" visible="false" />
                </children>
             </Pane>
             <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
@@ -118,16 +120,24 @@
             </HBox>
             <HBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
                <children>
-                  <ImageView fx:id="imgContinuar" fitHeight="100.0" onMouseClicked="#continuar" onMouseEntered="#sobreContinuar" onMouseExited="#fueraContinuar" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../imgs/individuales/accion_continuar.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="imgVolver" fitHeight="100.0" onMouseClicked="#volver" onMouseEntered="#sobreVolver" onMouseExited="#fueraVolver" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../imgs/individuales/accion_volver.png" />
-                     </image>
-                  </ImageView>
+                  <StackPane>
+                     <children>
+                        <ImageView fx:id="imgContinuar" fitHeight="100.0" onMouseClicked="#continuar" onMouseEntered="#sobreContinuar" onMouseExited="#fueraContinuar" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../imgs/individuales/accion_continuar.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </StackPane>
+                  <StackPane>
+                     <children>
+                        <ImageView fx:id="imgVolver" fitHeight="100.0" onMouseClicked="#volver" onMouseEntered="#sobreVolver" onMouseExited="#fueraVolver" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../imgs/individuales/accion_volver.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </StackPane>
                </children>
             </HBox>
             <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
