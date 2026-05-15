@@ -23,7 +23,7 @@ public class Partida {
         // empiezo en 2, porque las imagenes tienen nombre de player1, player2, etc. y el primer bot sera player2
         // por eso hago este bucle de manera tan "rara"
         for (int i = 2; i <= numBots+1; i++) {
-            Jugador bot = new Jugador("player"+i, false);
+            BotRandom bot = new BotRandom("player"+i, false);
             this.jugadores.add(bot);
         }
         this.ronda = 0;
@@ -195,8 +195,17 @@ public class Partida {
     private int decisionBots(List<Jugador> jugadoresQueVuelven) {
         int botsActivos = 0;
         for (int i = 1; i < jugadores.size(); i++) {
-            Jugador bot = jugadores.get(i);
+            Bot bot = (Bot) jugadores.get(i);
             if(bot.isExplorar()) {
+                boolean explorar = bot.tomarDecision(this);
+                if (explorar) {
+                    bot.setExplorar(true);
+                    botsActivos++;
+                } else {
+                    bot.setExplorar(false);
+                    jugadoresQueVuelven.add(bot);
+                }
+                /*
                 if (Math.random() < 0.75) {
                     bot.setExplorar(true);
                     botsActivos++;
@@ -204,6 +213,7 @@ public class Partida {
                     bot.setExplorar(false);
                     jugadoresQueVuelven.add(bot);
                 }
+                */
             }
         }
         return botsActivos;
